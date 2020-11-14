@@ -11,7 +11,8 @@
  * 8.- EVITAR COMENTARIOS. Los comentarios no arreglan un mal código -> Extraer el movimiento horizontal y lo hacemos más legible.
  * 9.- OPTIMIZACION DENTRO DE LA EXTRACCION -> Se modifica como están multiplicando los vectores para que multiplique escalares juntos y en vez de crear vectores nuevos usar los vectores predefinidos.
  * = Más extraccion para más legibilidad =
- * 10.- 
+ * 10.- MODIFICACION DE CONDICIONALES -> Es lo mismo que la limpieza de interpretaciones. Lo haremos dentro de las extracciones.
+ * 11.- CASO DE GUARDA -> Es una optimización que se aplica a los if's statement y lo aplicaremos a los que acabamos de extraer.
  */
 
 using System.Collections;
@@ -68,26 +69,32 @@ public class CameraMovement : MonoBehaviour
 
     private void MoveCameraVertical( Vector3 mousePosition, int currentResolutionHeight )
     {
-        if ( mousePosition.y < currentResolutionHeight * VerticalScreenPercentage )
+        var isMousePositionAtTheBottom = mousePosition.y < currentResolutionHeight * VerticalScreenPercentage;
+        if ( isMousePositionAtTheBottom )
         {
             ApplyTranslation( Vector3.right, movementSpeed );
+            return;
         }
-        else if ( mousePosition.y > currentResolutionHeight - currentResolutionHeight * VerticalScreenPercentage )
-        {
+
+        var isMousePositionAtTheTop = mousePosition.y > currentResolutionHeight - currentResolutionHeight * VerticalScreenPercentage;
+        if ( isMousePositionAtTheTop )
             ApplyTranslation( Vector3.left, movementSpeed );
-        }
+
     }
 
     private void MoveCameraHorizontal( Vector3 mousePosition, int currentResolutionWidth )
     {
-        if ( mousePosition.x < currentResolutionWidth * HorizontalScreenPercentage )
+        var isMousePositionAtTheLeft = mousePosition.x < currentResolutionWidth * HorizontalScreenPercentage;
+        if ( isMousePositionAtTheLeft )
         {
             ApplyTranslation( Vector3.back, movementSpeed );
+            return;
         }
-        else if ( mousePosition.x > currentResolutionWidth - currentResolutionWidth * HorizontalScreenPercentage )
-        {
+
+        var isMousePositionAtTheRight = mousePosition.x > currentResolutionWidth - currentResolutionWidth * HorizontalScreenPercentage;
+        if ( isMousePositionAtTheRight )
             ApplyTranslation( Vector3.forward, movementSpeed );
-        }
+
     }
 
     private void ApplyTranslation( Vector3 direction, float speed )
