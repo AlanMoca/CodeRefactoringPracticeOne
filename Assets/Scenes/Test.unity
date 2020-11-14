@@ -137,6 +137,8 @@ GameObject:
   - component: {fileID: 10632290}
   - component: {fileID: 10632291}
   - component: {fileID: 10632292}
+  - component: {fileID: 10632294}
+  - component: {fileID: 10632293}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -233,10 +235,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   castPreviewRange: {fileID: 640186688}
-  qSpellPreview: {fileID: 1116208250}
-  qSpell: {fileID: 1819247626587286416, guid: ad4ddeca65632354a90354053020dd12, type: 3}
-  wSpellPreview: {fileID: 1039297944}
-  wSpell: {fileID: 207347629354396320, guid: 7fe80a737228e54448b16c66afb2719e, type: 3}
+  qSpell: {fileID: 10632294}
+  wSpell: {fileID: 10632293}
 --- !u!195 &10632291
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -275,6 +275,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &10632293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10632285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 620e77e1ef775cb4cb38d74bf39ecb6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castPreviewRange: {fileID: 640186688}
+  wSpellPreview: {fileID: 1039297944}
+  wSpell: {fileID: 207347629354396320, guid: 7fe80a737228e54448b16c66afb2719e, type: 3}
+--- !u!114 &10632294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10632285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64bfef04092a8c940875405311ae405e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castPreviewRange: {fileID: 640186688}
+  qSpellPreview: {fileID: 640186688}
+  qSpell: {fileID: 1819247626587286416, guid: ad4ddeca65632354a90354053020dd12, type: 3}
 --- !u!43 &107982386
 Mesh:
   m_ObjectHideFlags: 0

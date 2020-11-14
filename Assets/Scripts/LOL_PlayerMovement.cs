@@ -7,6 +7,7 @@
  * 12.3.- Se agregan las instancias a la clase en la clase PlayerMovement y se llaman a sus métodos donde se presionan las teclas. Y aplicamos regla de clausula de guarda a los if de la tecla Q, para quitar parentesis y niveles de anidamiento.
  * 12.4.- Se aplica lo mismo para la clase WSpell.
  * 12.5.- En este punto el código queda más compacto y limpio, además que extrajimos 2 responsabilidades de la clase.
+ * 12.6.- La clase LOL_PlayerMovement estaba moviendose y aplicando las habilidades. El nombre no era consistente con las responsabilidades que tenía y sigue sin serlo porque aunque no tiene el behaviour si da las ordenes de cuando ejecutarse.
  */
 using System.Collections;
 using System.Collections.Generic;
@@ -18,8 +19,6 @@ public class LOL_PlayerMovement : MonoBehaviour
     private NavMeshAgent _nav;
     private Transform _body;    // Body gameobject HAS to be the first child in the list
     private Animator _ac;
-
-    public GameObject castPreviewRange;
 
     [SerializeField] private QSpell qSpell;
     [SerializeField] private WSpell wSpell;
@@ -104,7 +103,7 @@ public class LOL_PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.W))
         {
-            wSpell.KeyPressed( transform );
+            wSpell.KeyReleased( transform );
             return;
         }
         
