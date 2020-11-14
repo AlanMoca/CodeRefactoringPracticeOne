@@ -234,9 +234,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0d8aa73a5cf49429799ba565ef5a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castPreviewRange: {fileID: 640186688}
-  qSpell: {fileID: 10632294}
-  wSpell: {fileID: 10632293}
 --- !u!195 &10632291
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -303,7 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   castPreviewRange: {fileID: 640186688}
-  qSpellPreview: {fileID: 640186688}
+  qSpellPreview: {fileID: 1116208250}
   qSpell: {fileID: 1819247626587286416, guid: ad4ddeca65632354a90354053020dd12, type: 3}
 --- !u!43 &107982386
 Mesh:

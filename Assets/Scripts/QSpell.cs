@@ -1,6 +1,4 @@
-﻿/*
- * NOTA: Aquí sólo agregué el Awake además.
- */
+﻿using Spells;
 using UnityEngine;
 using UnityEngine.AI;
 

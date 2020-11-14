@@ -8,9 +8,13 @@
  * 12.4.- Se aplica lo mismo para la clase WSpell.
  * 12.5.- En este punto el código queda más compacto y limpio, además que extrajimos 2 responsabilidades de la clase.
  * 12.6.- La clase LOL_PlayerMovement estaba moviendose y aplicando las habilidades. El nombre no era consistente con las responsabilidades que tenía y sigue sin serlo porque aunque no tiene el behaviour si da las ordenes de cuando ejecutarse.
+ * 13.- Open-Closed -> Lo usaremos para añadir nuevas habilidades y no tengamos que modificar al player cada que lo hagamos.
+ * 13.1.- Desapareceremos las instancias de las clases QSpell y WSpell y en su lugar las generalizaremos para que tengan un padre común.
+ * NOTA: A día de hoy esto sería lo ideal pero unity aún no deja serializar interfaces. Y no podemos obtenerlas por getcomponent en el awake porque son 2 con la misma interface, lo que ocasiona un conflicto de que no sabe cuál usar.
  */
 using System.Collections;
 using System.Collections.Generic;
+using Spells;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,8 +24,8 @@ public class LOL_PlayerMovement : MonoBehaviour
     private Transform _body;    // Body gameobject HAS to be the first child in the list
     private Animator _ac;
 
-    [SerializeField] private QSpell qSpell;
-    [SerializeField] private WSpell wSpell;
+    [SerializeField] private ISpell qSpell;
+    [SerializeField] private ISpell wSpell;
 
     private void Awake()
     {

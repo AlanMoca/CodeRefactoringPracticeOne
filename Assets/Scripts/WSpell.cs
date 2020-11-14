@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Spells;
+using UnityEngine;
 using UnityEngine.AI;
 
-public class WSpell : MonoBehaviour
+public class WSpell : MonoBehaviour, ISpell
 {
     private NavMeshAgent _nav;
     private Transform _body;
