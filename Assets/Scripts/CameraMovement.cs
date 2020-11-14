@@ -1,10 +1,18 @@
-﻿using System.Collections;
+﻿/*
+ * ¿Qué haremos?
+ * 1.- NORMALIZAR VARIABLES -> Usamos un estandar u otro pero no combinados. Nosotros usaremos Camel Caes.
+ * 2.- ESCRIBIR BIEN EL NOMBRE DE LAS VARIABLES -> No nos de miedo a tener nombres largos.
+ * 3.- HACER CONSTANTES -> Hay dos valores que se asignan y no se modifican que son el horizontal y el vertical.
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class CameraMovement : MonoBehaviour
 {
-    [Range(1.0f, 20.0f)]
+    /*[FormerlySerializeAs( "movement_speed" )]*/ [Range(1.0f, 20.0f)]
     public float movement_speed;
 
     [Range(1.0f, 6.0f)]
@@ -13,8 +21,8 @@ public class CameraMovement : MonoBehaviour
     [Range(1.0f, 90.0f)]
     public float angle;
 
-    private float hScreenPercentage = 0.1f;
-    private float vScreenPercentage = 0.1f;
+    private const float HorizontalScreenPercentage = 0.1f;
+    private const float VerticalScreenPercentage = 0.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +42,6 @@ public class CameraMovement : MonoBehaviour
             CenterAtPlayer();
     }
 
-    //
     private void MoveCamera() {
         Vector3 mp = Input.mousePosition;
         int w = Screen.currentResolution.width;
@@ -43,21 +50,20 @@ public class CameraMovement : MonoBehaviour
 
         Debug.Log(mp.x + " - " + mp.y);
         // Horizontal
-        if (mp.x < w * hScreenPercentage) {
+        if (mp.x < w * HorizontalScreenPercentage) {
             transform.position -= new Vector3(0,0,1) * movement_speed * Time.deltaTime;
         }
-        else if (mp.x > w - w * hScreenPercentage)
+        else if (mp.x > w - w * HorizontalScreenPercentage)
         {
             transform.position += new Vector3(0, 0, 1) * movement_speed * Time.deltaTime;
         }
         
         // Vertical
-        if (mp.y < h * vScreenPercentage)
+        if (mp.y < h * VerticalScreenPercentage)
         {
-            
             transform.position += new Vector3(1, 0, 0) * movement_speed * Time.deltaTime;
         }
-        else if (mp.y > h - h * vScreenPercentage)
+        else if (mp.y > h - h * VerticalScreenPercentage)
         {
             transform.position -= new Vector3(1, 0, 0) * movement_speed * Time.deltaTime;
         }
