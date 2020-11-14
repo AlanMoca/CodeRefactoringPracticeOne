@@ -1,19 +1,17 @@
 ﻿/*
- * What will we do?
- * 1.- NORMALIZE VARIABLES -> We use one standard or another but not combined.We will use Camel Caes.
-
-* 2.- WRITE THE NAME OF THE VARIABLES WELL -> We are not afraid of having long names.
- * 3.- MAKE CONSTANTS -> There are two values ​​that are assigned and are not modified, which are horizontal and vertical.
-
-* 4.- INDICATE MODIFIERS CORRECTLY -> A cleaner code has everything well specified. (Private, public).
- * 5.- DELETE COMMENTS THAT DO NOT CONTRIBUTE ANYTHING -> Like those of unity.
- * 6.- CLEAN INTERPRETATIONS -> Here we have to read and think about what the code is doing and that is not what we want, for example the if of the update.We will clean that up.
- * 7.- TYPES SIMPLIFICATION WITH VAR -> Within the methods it is not necessary to specify the type of a variable since knowing the type only contributes noise and is already implicit in the name of the variable.
- * = We change the names of the variables again to make it explicit. =
- * 8.- AVOID COMMENTS. Comments don't fix bad code -> Extract horizontal movement and make it more readable.
- * 9.- OPTIMIZATION WITHIN THE EXTRACTION -> It is modified how the vectors are being multiplied so that they multiply scalars together and instead of creating new vectors use the predefined vectors.
- * = More extraction for more readability =
- *10.-
+ * ¿Qué haremos?
+ * 1.- NORMALIZAR VARIABLES -> Usamos un estandar u otro pero no combinados. Nosotros usaremos Camel Caes.
+ * 2.- ESCRIBIR BIEN EL NOMBRE DE LAS VARIABLES -> No nos de miedo a tener nombres largos.
+ * 3.- HACER CONSTANTES -> Hay dos valores que se asignan y no se modifican que son el horizontal y el vertical.
+ * 4.- INDICAR MODIFICADORES CORRECTAMENTE -> Un código más limpio tiene bien especificado todo. (Private, public).
+ * 5.- BORRAR COMENTARIOS QUE NO APORTEN NADA -> Como los de unity.
+ * 6.- LIMPIAR INTERPRETACIONES -> Aquí tenemos que leer y pensar qué está haciendo el código y eso no es lo que queremos por ejemplo el if del update. Limpiaremos eso.
+ * 7.- SIMPLIFICACION DE TIPOS CON VAR -> Dentro de los metodos no es necesario especificar el tipo de una variable ya que saber el tipo solo aporta ruido y ya está implicito en el nombre de la variable.
+ * = Volvemos a modificar nomsbres de las variables para que sea explicito. =
+ * 8.- EVITAR COMENTARIOS. Los comentarios no arreglan un mal código -> Extraer el movimiento horizontal y lo hacemos más legible.
+ * 9.- OPTIMIZACION DENTRO DE LA EXTRACCION -> Se modifica como están multiplicando los vectores para que multiplique escalares juntos y en vez de crear vectores nuevos usar los vectores predefinidos.
+ * = Más extraccion para más legibilidad =
+ * 10.- 
  */
 
 using System.Collections;
