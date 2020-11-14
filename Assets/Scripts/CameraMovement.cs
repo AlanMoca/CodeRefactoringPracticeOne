@@ -6,6 +6,9 @@
  * 4.- INDICAR MODIFICADORES CORRECTAMENTE -> Un código más limpio tiene bien especificado todo. (Private, public).
  * 5.- BORRAR COMENTARIOS QUE NO APORTEN NADA -> Como los de unity.
  * 6.- LIMPIAR INTERPRETACIONES -> Aquí tenemos que leer y pensar qué está haciendo el código y eso no es lo que queremos por ejemplo el if del update. Limpiaremos eso.
+ * 7.- SIMPLIFICACION DE TIPOS CON VAR -> Dentro de los metodos no es necesario especificar el tipo de una variable ya que saber el tipo solo aporta ruido y ya está implicito en el nombre de la variable.
+ * = Volvemos a modificar nomsbres de las variables para que sea explicito. =
+ * 
  */
 
 using System.Collections;
@@ -49,27 +52,27 @@ public class CameraMovement : MonoBehaviour
     }
 
     private void MoveCamera() {
-        Vector3 mp = Input.mousePosition;
-        int w = Screen.currentResolution.width;
-        int h = Screen.currentResolution.height;
+        var mousePosition = Input.mousePosition;
+        var currentResolutionWidth = Screen.currentResolution.width;
+        var currentResolutionHeight = Screen.currentResolution.height;
 
 
-        Debug.Log(mp.x + " - " + mp.y);
+        Debug.Log(mousePosition.x + " - " + mousePosition.y);
         // Horizontal
-        if (mp.x < w * HorizontalScreenPercentage) {
+        if (mousePosition.x < currentResolutionWidth * HorizontalScreenPercentage) {
             transform.position -= new Vector3(0,0,1) * movement_speed * Time.deltaTime;
         }
-        else if (mp.x > w - w * HorizontalScreenPercentage)
+        else if (mousePosition.x > currentResolutionWidth - currentResolutionWidth * HorizontalScreenPercentage)
         {
             transform.position += new Vector3(0, 0, 1) * movement_speed * Time.deltaTime;
         }
         
         // Vertical
-        if (mp.y < h * VerticalScreenPercentage)
+        if (mousePosition.y < currentResolutionHeight * VerticalScreenPercentage)
         {
             transform.position += new Vector3(1, 0, 0) * movement_speed * Time.deltaTime;
         }
-        else if (mp.y > h - h * VerticalScreenPercentage)
+        else if (mousePosition.y > currentResolutionHeight - currentResolutionHeight * VerticalScreenPercentage)
         {
             transform.position -= new Vector3(1, 0, 0) * movement_speed * Time.deltaTime;
         }
