@@ -1,7 +1,89 @@
-﻿using System.Collections;
+﻿/*
+ * 12.- OPEN-CLOSED & SINGLE RESPONSABILITY -> Extraeremos la gestión de habilidades. (Q y W buttons).
+ * 12.1.- Creamos clases para extracción de habilidades.
+ * NOTA: No se extraen las teclas que usamos para la hbilidad, la habilidad sólo se preocupa de sí misma. (Así cumplimos el primer principio).
+ * NOTA: Nombre de objeto en la vida real para las clases y nombre de verbo para los métodos.
+ * 
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
+public class QSpell
+{
+    public void Reset()
+    {
+        qSpellPreview.SetActive( false );
+        castPreviewRange.SetActive( false );
+    }
+
+    public void KeyPressed()
+    {
+        qSpellPreview.SetActive( true );
+        castPreviewRange.SetActive( true );
+
+        RaycastHit hitAtk;
+        Ray rayAtk = Camera.main.ScreenPointToRay( Input.mousePosition );
+        if ( Physics.Raycast( rayAtk, out hitAtk, Mathf.Infinity ) )
+        {
+            float floorHeight = hitAtk.point.y;
+            Vector3 center = new Vector3( transform.position.x, floorHeight, transform.position.z );
+
+            Vector3 dir = hitAtk.point - center;
+            dir = new Vector3( dir.x, 0, dir.z );
+            Vector3 castDir = qSpellPreview.transform.position - center;
+            castDir = new Vector3( castDir.x, 0, castDir.z );
+            float sAngle = Vector3.SignedAngle( dir, castDir, Vector3.up );
+
+            //Debug.DrawRay(center, dir, Color.red);
+            //Debug.DrawRay(center, castDir * 50, Color.blue);
+
+            int sign = ( sAngle >= 0 ) ? 1 : -1;
+            float angle = Mathf.Abs( sAngle );
+            if ( angle > 0.3f )
+                qSpellPreview.transform.RotateAround( center, Vector3.up, -sign * angle );
+
+
+
+            Debug.Log( angle );
+        }
+    }
+
+    public void KeyReleased()
+    {
+        _nav.velocity = Vector3.zero;
+        _nav.ResetPath();
+        _ac.Play( "Spell_Q" );
+
+        RaycastHit hitAtk;
+        Ray rayAtk = Camera.main.ScreenPointToRay( Input.mousePosition );
+        if ( Physics.Raycast( rayAtk, out hitAtk, Mathf.Infinity ) )
+        {
+            float transformHeight = transform.position.y;
+            float floorHeight = hitAtk.point.y;
+            Vector3 point = new Vector3( hitAtk.point.x, transformHeight, hitAtk.point.z );
+
+
+
+            transform.LookAt( point );
+
+            Vector3 center = new Vector3( transform.position.x, floorHeight, transform.position.z );
+
+            Vector3 dir = hitAtk.point - center;
+            dir = new Vector3( dir.x, 0, dir.z );
+            GameObject spell = Instantiate( qSpell, transform.position, Quaternion.identity );
+            spell.GetComponent<Rigidbody>().velocity = dir.normalized * 5.0f;
+            Debug.Log( dir.normalized );
+        }
+    }
+
+}
+
+public class WSpell
+{
+
+}
 
 public class LOL_PlayerMovement : MonoBehaviour
 {
@@ -71,69 +153,15 @@ public class LOL_PlayerMovement : MonoBehaviour
     private void HandleQAttack() {
         if (Input.GetKey(KeyCode.Q))
         {
-            qSpellPreview.SetActive(true);
-            castPreviewRange.SetActive(true);
-
-            RaycastHit hitAtk;
-            Ray rayAtk = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(rayAtk, out hitAtk, Mathf.Infinity))
-            {
-                float floorHeight = hitAtk.point.y;
-                Vector3 center = new Vector3(transform.position.x, floorHeight, transform.position.z);
-
-                Vector3 dir = hitAtk.point - center;
-                dir = new Vector3(dir.x, 0, dir.z);
-                Vector3 castDir = qSpellPreview.transform.position - center;
-                castDir = new Vector3(castDir.x, 0, castDir.z);
-                float sAngle = Vector3.SignedAngle(dir, castDir, Vector3.up);
-
-                //Debug.DrawRay(center, dir, Color.red);
-                //Debug.DrawRay(center, castDir * 50, Color.blue);
-
-                int sign = (sAngle >= 0) ? 1 : -1;
-                float angle = Mathf.Abs(sAngle);
-                if (angle > 0.3f) qSpellPreview.transform.RotateAround(center, Vector3.up, -sign * angle);
-
-
-
-                Debug.Log(angle);
-            }
+            
         }
         else if (Input.GetKeyUp(KeyCode.Q)) {
            
 
-            _nav.velocity = Vector3.zero;
-            _nav.ResetPath();
-            _ac.Play("Spell_Q");
-
-            RaycastHit hitAtk;
-            Ray rayAtk = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(rayAtk, out hitAtk, Mathf.Infinity))
-            {
-                float transformHeight = transform.position.y;
-                float floorHeight = hitAtk.point.y;
-                Vector3 point = new Vector3(hitAtk.point.x, transformHeight, hitAtk.point.z);
-
-
-
-                transform.LookAt(point);
-
-                Vector3 center = new Vector3(transform.position.x, floorHeight, transform.position.z);
-
-                Vector3 dir = hitAtk.point - center;
-                dir = new Vector3(dir.x, 0, dir.z);
-                GameObject spell = Instantiate(qSpell, transform.position, Quaternion.identity);
-                spell.GetComponent<Rigidbody>().velocity = dir.normalized * 5.0f;
-                Debug.Log(dir.normalized);
-            }
-
-            
-
         }
         else
         {
-            qSpellPreview.SetActive(false);
-            castPreviewRange.SetActive(false);
+            
         }
     }
 

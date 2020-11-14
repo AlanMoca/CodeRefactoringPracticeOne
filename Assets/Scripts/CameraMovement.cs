@@ -14,8 +14,7 @@
  * 10.- MODIFICACION DE CONDICIONALES -> Es lo mismo que la limpieza de interpretaciones. Lo haremos dentro de las extracciones.
  * 11.- CASO DE GUARDA -> Es una optimización que se aplica a los if's statement y lo aplicaremos a los que acabamos de extraer.
  * = Más Optimizacion y estandarización de variables = -> FindObjectType.
- * 
- */
+*/
 
 using System.Collections;
 using System.Collections.Generic;
