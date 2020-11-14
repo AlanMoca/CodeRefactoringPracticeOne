@@ -13,6 +13,9 @@
  * NOTA: A día de hoy esto sería lo ideal pero unity aún no deja serializar interfaces. Y no podemos obtenerlas por getcomponent en el awake porque son 2 con la misma interface, lo que ocasiona un conflicto de que no sabe cuál usar.
  * 13.2.- Cambiaremos la interface a clase abstracta y sus referencias e instancias.
  * NOTA: Para jalarlo en el editor lo jalas directamente del componente no jalas el gameObject.
+ * 14.- AGREGACIÓN DE VISTA -> Ahora lo que haremos será que en vez de tener 2 Spells en los Getcomponent, asignaremos una vista para tener todas las que querramos. Y la configuración de la tecla a cada spell.
+ * 14.1.- Extraeremos la tecla.
+ * 14.2.- 
  */
 using System.Collections;
 using System.Collections.Generic;
@@ -23,10 +26,12 @@ using UnityEngine.AI;
 public class LOL_PlayerMovement : MonoBehaviour
 {
     private NavMeshAgent _nav;
-    private Transform _body;    // Body gameobject HAS to be the first child in the list
+    private Transform _body;
     private Animator _ac;
 
+    [SerializeField] private KeyCode qKeyCode;
     [SerializeField] private Spell qSpell;
+    [SerializeField] private KeyCode wKeyCode;
     [SerializeField] private Spell wSpell;
 
     private void Awake()
@@ -83,13 +88,13 @@ public class LOL_PlayerMovement : MonoBehaviour
 
     private void HandleQAttack()
     {
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey( qKeyCode ))
         {
             qSpell.KeyPressed( transform );
             return;
         }
 
-        if (Input.GetKeyUp(KeyCode.Q))
+        if (Input.GetKeyUp( qKeyCode ) )
         {
             qSpell.KeyReleased( transform );
             return;
@@ -101,13 +106,13 @@ public class LOL_PlayerMovement : MonoBehaviour
 
     private void HandleWAttack()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey( wKeyCode ) )
         {
             wSpell.KeyPressed( transform );
             return;
         }
 
-        if (Input.GetKeyUp(KeyCode.W))
+        if (Input.GetKeyUp( wKeyCode ) )
         {
             wSpell.KeyReleased( transform );
             return;

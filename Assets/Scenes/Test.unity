@@ -234,7 +234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0d8aa73a5cf49429799ba565ef5a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  qKeyCode: 113
   qSpell: {fileID: 10632294}
+  wKeyCode: 119
   wSpell: {fileID: 10632293}
 --- !u!195 &10632291
 NavMeshAgent:
