@@ -34,6 +34,7 @@ public class CameraMovement : MonoBehaviour
             CenterAtPlayer();
     }
 
+    //
     private void MoveCamera() {
         Vector3 mp = Input.mousePosition;
         int w = Screen.currentResolution.width;
@@ -53,6 +54,7 @@ public class CameraMovement : MonoBehaviour
         // Vertical
         if (mp.y < h * vScreenPercentage)
         {
+            
             transform.position += new Vector3(1, 0, 0) * movement_speed * Time.deltaTime;
         }
         else if (mp.y > h - h * vScreenPercentage)
