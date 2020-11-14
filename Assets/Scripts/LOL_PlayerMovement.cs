@@ -1,35 +1,25 @@
 ﻿/*
- * 12.- OPEN-CLOSED & SINGLE RESPONSABILITY -> Extraeremos la gestión de habilidades. (Q y W buttons).
- * 12.1.- Creamos clases para extracción de habilidades.
- * NOTA: No se extraen las teclas que usamos para la hbilidad, la habilidad sólo se preocupa de sí misma. (Así cumplimos el primer principio).
- * NOTA: Nombre de objeto en la vida real para las clases y nombre de verbo para los métodos.
- * 12.2.- Resolver las variables que necesitan -> En vez de hacer el transform Monobehaviour, se lo pasamos por parametro al método. Y al instantiate le haremos: Object.Instantiate()... Necesitamos serealizar por lo que haremos las clases monobehaviour
- * 12.3.- Se agregan las instancias a la clase en la clase PlayerMovement y se llaman a sus métodos donde se presionan las teclas. Y aplicamos regla de clausula de guarda a los if de la tecla Q, para quitar parentesis y niveles de anidamiento.
- * 12.4.- Se aplica lo mismo para la clase WSpell.
- * 12.5.- En este punto el código queda más compacto y limpio, además que extrajimos 2 responsabilidades de la clase.
- * 12.6.- La clase LOL_PlayerMovement estaba moviendose y aplicando las habilidades. El nombre no era consistente con las responsabilidades que tenía y sigue sin serlo porque aunque no tiene el behaviour si da las ordenes de cuando ejecutarse.
- * 13.- Open-Closed -> Lo usaremos para añadir nuevas habilidades y no tengamos que modificar al player cada que lo hagamos.
- * 13.1.- Desapareceremos las instancias de las clases QSpell y WSpell y en su lugar las generalizaremos para que tengan un padre común.
- * NOTA: A día de hoy esto sería lo ideal pero unity aún no deja serializar interfaces. Y no podemos obtenerlas por getcomponent en el awake porque son 2 con la misma interface, lo que ocasiona un conflicto de que no sabe cuál usar.
- * 13.2.- Cambiaremos la interface a clase abstracta y sus referencias e instancias.
- * NOTA: Para jalarlo en el editor lo jalas directamente del componente no jalas el gameObject.
- * 14.- AGREGACIÓN DE VISTA -> Ahora lo que haremos será que en vez de tener 2 Spells en los Getcomponent, asignaremos una vista para tener todas las que querramos. Y la configuración de la tecla a cada spell.
- * 14.1.- Extraeremos la tecla.
- * 14.2.- EXTRACCIÓN DE CLASE DE CONFIGURACION -> Haremos una clase para la configuración de los spells, crearemos un array para los spells y extraeremos el método handleAtack en uno solo.
- */
-using System.Collections;
-using System.Collections.Generic;
-using Spells;
+ * 12.- OPEN-CLOSED & SINGLE RESPONSABILITY -> We will extract skills management. (Q and W buttons).
+ * 12.1.- We create classes for skills extraction.
+ * NOTE: The keys that we use for the skill are not removed, the skill only cares about itself. (Thus we fulfill the first principle).
+ * NOTE: Real life object name for classes and verb name for methods.
+ * 12.2.- Solve the variables they need -> Instead of doing the Monobehaviour transform, we pass it as a parameter to the method. And to instantiate we will do: Object.Instantiate () ... We need to perform so we will do the monobehaviour classes
+ * 12.3.- Instances are added to the class in the PlayerMovement class and their methods are called where the keys are pressed. And we apply the guard clause rule to the ifs of the Q key, to remove parentheses and nesting levels.
+ * 12.4.- The same applies for the WSpell class.
+ * 12.5.- At this point the code is more compact and clean, in addition we have extracted 2 responsibilities from the class.
+ * 12.6.- The LOL_PlayerMovement class was moving and applying the skills. The name was not consistent with the responsibilities it had and it still is not because although it does not have the behavior, it does give the orders of when to execute.
+ * 13.- Open-Closed -> We will use it to add new abilities and we will not have to modify the player every time we do it.
+ * 13.1.- We will disappear the instances of the QSpell and WSpell classes and in their place we will generalize them so that they have a common parent.
+ * NOTE: Today this would be ideal but unity still does not allow interfaces to be serialized. And we cannot get them by getcomponent in awake because they are 2 with the same interface, which causes a conflict that does not know which one to use.
+ * 13.2.- We will change the interface to an abstract class and its references and instances.
+ * NOTE: To pull it in the editor you pull it directly from the component you don't pull the gameObject.
+ * 14.- VIEW AGGREGATION -> Now what we will do is that instead of having 2 Spells in the Getcomponents, we will assign a view to have all the ones we want. And the configuration of the key to each spell.
+ * 14.1.- We will extract the key.
+ * 14.2.- EXTRACTION OF CONFIGURATION CLASS -> We will make a class for the configuration of the spells, we will create an array for the spells and we will extract the handleAtack method in just one.
+*/
+
 using UnityEngine;
 using UnityEngine.AI;
-using System;
-
-[Serializable]
-public class SpellConfiguration
-{
-    public Spell Spell;
-    public KeyCode KeyCode;
-}
 
 public class LOL_PlayerMovement : MonoBehaviour
 {
