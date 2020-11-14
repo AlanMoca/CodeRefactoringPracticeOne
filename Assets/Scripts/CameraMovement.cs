@@ -9,6 +9,7 @@
  * 7.- SIMPLIFICACION DE TIPOS CON VAR -> Dentro de los metodos no es necesario especificar el tipo de una variable ya que saber el tipo solo aporta ruido y ya está implicito en el nombre de la variable.
  * = Volvemos a modificar nomsbres de las variables para que sea explicito. =
  * 8.- EVITAR COMENTARIOS. Los comentarios no arreglan un mal código -> Extraer el movimiento horizontal y lo hacemos más legible.
+ * 9.- OPTIMIZACION DENTRO DE LA EXTRACCION -> Se modifica como están multiplicando los vectores para que multiplique escalares juntos y en vez de crear vectores nuevos usar los vectores predefinidos.
  */
 
 using System.Collections;
@@ -67,11 +68,11 @@ public class CameraMovement : MonoBehaviour
     {
         if ( mousePosition.y < currentResolutionHeight * VerticalScreenPercentage )
         {
-            transform.position += new Vector3( 1, 0, 0 ) * movement_speed * Time.deltaTime;
+            transform.position += Vector3.right * (movement_speed * Time.deltaTime);
         }
         else if ( mousePosition.y > currentResolutionHeight - currentResolutionHeight * VerticalScreenPercentage )
         {
-            transform.position -= new Vector3( 1, 0, 0 ) * movement_speed * Time.deltaTime;
+            transform.position -= Vector3.right * ( movement_speed * Time.deltaTime );
         }
     }
 
@@ -79,11 +80,11 @@ public class CameraMovement : MonoBehaviour
     {
         if ( mousePosition.x < currentResolutionWidth * HorizontalScreenPercentage )
         {
-            transform.position -= new Vector3( 0, 0, 1 ) * movement_speed * Time.deltaTime;
+            transform.position -= Vector3.forward * ( movement_speed * Time.deltaTime );
         }
         else if ( mousePosition.x > currentResolutionWidth - currentResolutionWidth * HorizontalScreenPercentage )
         {
-            transform.position += new Vector3( 0, 0, 1 ) * movement_speed * Time.deltaTime;
+            transform.position += Vector3.forward * ( movement_speed * Time.deltaTime );
         }
     }
 
