@@ -5,16 +5,13 @@
  * NOTA: Nombre de objeto en la vida real para las clases y nombre de verbo para los métodos.
  * 12.2.- Resolver las variables que necesitan -> En vez de hacer el transform Monobehaviour, se lo pasamos por parametro al método. Y al instantiate le haremos: Object.Instantiate()... Necesitamos serealizar por lo que haremos las clases monobehaviour
  * 12.3.- Se agregan las instancias a la clase en la clase PlayerMovement y se llaman a sus métodos donde se presionan las teclas. Y aplicamos regla de clausula de guarda a los if de la tecla Q, para quitar parentesis y niveles de anidamiento.
+ * 12.4.- Se aplica lo mismo para la clase WSpell.
+ * 12.5.- En este punto el código queda más compacto y limpio, además que extrajimos 2 responsabilidades de la clase.
  */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
-public class WSpell
-{
-
-}
 
 public class LOL_PlayerMovement : MonoBehaviour
 {
@@ -25,9 +22,8 @@ public class LOL_PlayerMovement : MonoBehaviour
     public GameObject castPreviewRange;
 
     [SerializeField] private QSpell qSpell;
+    [SerializeField] private WSpell wSpell;
 
-    public GameObject wSpellPreview;
-    public GameObject wSpell;
     private void Awake()
     {
         _nav = GetComponent<NavMeshAgent>();
@@ -93,50 +89,26 @@ public class LOL_PlayerMovement : MonoBehaviour
             qSpell.KeyReleased( transform );
             return;
         }
+        
+        qSpell.Reset();
 
-            qSpell.Reset();
     }
-
 
     private void HandleWAttack()
     {
         if (Input.GetKey(KeyCode.W))
         {
-            wSpellPreview.SetActive(true);
-            castPreviewRange.SetActive(true);
-
-            RaycastHit hitAtk;
-            Ray rayAtk = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(rayAtk, out hitAtk, Mathf.Infinity))
-            {
-                wSpellPreview.transform.position = hitAtk.point + new Vector3(0, 0.02f, 0);
-
-            }
+            wSpell.KeyPressed( transform );
+            return;
         }
-        else if (Input.GetKeyUp(KeyCode.W))
+
+        if (Input.GetKeyUp(KeyCode.W))
         {
-            _nav.velocity = Vector3.zero;
-            _nav.ResetPath();
-            _ac.Play("Spell_W");
-
-            RaycastHit hitAtk;
-            Ray rayAtk = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(rayAtk, out hitAtk, Mathf.Infinity))
-            {
-                float transformHeight = transform.position.y;
-                float floorHeight = hitAtk.point.y;
-                Vector3 point = new Vector3(hitAtk.point.x, floorHeight + 0.01f, hitAtk.point.z);
-                
-                transform.LookAt(point);
-
-                GameObject spell = Instantiate(wSpell, point, Quaternion.identity);
-            }
-            
+            wSpell.KeyPressed( transform );
+            return;
         }
-        else
-        {
-            wSpellPreview.SetActive(false);
-            castPreviewRange.SetActive(false);
-        }
+        
+        wSpell.Reset();
+
     }
 }
