@@ -1,11 +1,9 @@
 ﻿/*
  * What will we do?
  * 1.- NORMALIZE VARIABLES -> We use one standard or another but not combined.We will use Camel Caes.
-
-* 2.- WRITE THE NAME OF THE VARIABLES WELL -> We are not afraid of having long names.
+ * 2.- WRITE THE NAME OF THE VARIABLES WELL -> We are not afraid of having long names.
  * 3.- MAKE CONSTANTS -> There are two values ​​that are assigned and are not modified, which are horizontal and vertical.
-
-* 4.- INDICATE MODIFIERS CORRECTLY -> A cleaner code has everything well specified. (Private, public).
+ * 4.- INDICATE MODIFIERS CORRECTLY -> A cleaner code has everything well specified. (Private, public).
  * 5.- DELETE COMMENTS THAT DO NOT CONTRIBUTE ANYTHING -> Like those of unity.
  * 6.- CLEAN INTERPRETATIONS -> Here we have to read and think about what the code is doing and that is not what we want, for example the if of the update.We will clean that up.
  * 7.- TYPES SIMPLIFICATION WITH VAR -> Within the methods it is not necessary to specify the type of a variable since knowing the type only contributes noise and is already implicit in the name of the variable.
