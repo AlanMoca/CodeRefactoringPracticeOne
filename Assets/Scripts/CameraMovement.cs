@@ -23,7 +23,7 @@ using System;
 
 public class CameraMovement : MonoBehaviour
 {
-    /*[FormerlySerializeAs( "movement_speed" )]*/ [Range(1.0f, 20.0f)]
+    [Range(1.0f, 20.0f)]
     public float movementSpeed;
 
     [Range(1.0f, 6.0f)]

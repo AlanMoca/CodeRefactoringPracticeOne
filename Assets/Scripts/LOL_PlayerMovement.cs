@@ -15,13 +15,21 @@
  * NOTA: Para jalarlo en el editor lo jalas directamente del componente no jalas el gameObject.
  * 14.- AGREGACIÓN DE VISTA -> Ahora lo que haremos será que en vez de tener 2 Spells en los Getcomponent, asignaremos una vista para tener todas las que querramos. Y la configuración de la tecla a cada spell.
  * 14.1.- Extraeremos la tecla.
- * 14.2.- 
+ * 14.2.- EXTRACCIÓN DE CLASE DE CONFIGURACION -> Haremos una clase para la configuración de los spells, crearemos un array para los spells y extraeremos el método handleAtack en uno solo.
  */
 using System.Collections;
 using System.Collections.Generic;
 using Spells;
 using UnityEngine;
 using UnityEngine.AI;
+using System;
+
+[Serializable]
+public class SpellConfiguration
+{
+    public Spell Spell;
+    public KeyCode KeyCode;
+}
 
 public class LOL_PlayerMovement : MonoBehaviour
 {
@@ -29,10 +37,7 @@ public class LOL_PlayerMovement : MonoBehaviour
     private Transform _body;
     private Animator _ac;
 
-    [SerializeField] private KeyCode qKeyCode;
-    [SerializeField] private Spell qSpell;
-    [SerializeField] private KeyCode wKeyCode;
-    [SerializeField] private Spell wSpell;
+    [SerializeField] private SpellConfiguration[] spells;
 
     private void Awake()
     {
@@ -41,13 +46,11 @@ public class LOL_PlayerMovement : MonoBehaviour
         _ac = _body.GetComponent<Animator>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         _nav.updateRotation = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(1)) {
@@ -57,15 +60,12 @@ public class LOL_PlayerMovement : MonoBehaviour
                 _nav.SetDestination(hit.point);
         }
 
+        foreach ( var spellConfiguration in spells )
+        {
+            HandleSpell( spellConfiguration );
+        }
 
-        HandleQAttack();
-        HandleWAttack();
-
-
-        
         _ac.SetBool("Run", IsMoving());
-        
-
 
     }
 
@@ -86,39 +86,22 @@ public class LOL_PlayerMovement : MonoBehaviour
         }
     }
 
-    private void HandleQAttack()
+    private void HandleSpell( SpellConfiguration spellConfiguration )
     {
-        if (Input.GetKey( qKeyCode ))
+        if (Input.GetKey( spellConfiguration.KeyCode ))
         {
-            qSpell.KeyPressed( transform );
+            spellConfiguration.Spell.KeyPressed( transform );
             return;
         }
 
-        if (Input.GetKeyUp( qKeyCode ) )
+        if (Input.GetKeyUp( spellConfiguration.KeyCode ) )
         {
-            qSpell.KeyReleased( transform );
+            spellConfiguration.Spell.KeyReleased( transform );
             return;
         }
         
-        qSpell.Reset();
+        spellConfiguration.Spell.Reset();
 
     }
 
-    private void HandleWAttack()
-    {
-        if (Input.GetKey( wKeyCode ) )
-        {
-            wSpell.KeyPressed( transform );
-            return;
-        }
-
-        if (Input.GetKeyUp( wKeyCode ) )
-        {
-            wSpell.KeyReleased( transform );
-            return;
-        }
-        
-        wSpell.Reset();
-
-    }
 }
