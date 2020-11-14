@@ -13,6 +13,8 @@
  * = Más extraccion para más legibilidad =
  * 10.- MODIFICACION DE CONDICIONALES -> Es lo mismo que la limpieza de interpretaciones. Lo haremos dentro de las extracciones.
  * 11.- CASO DE GUARDA -> Es una optimización que se aplica a los if's statement y lo aplicaremos a los que acabamos de extraer.
+ * = Más Optimizacion y estandarización de variables = -> FindObjectType.
+ * 
  */
 
 using System.Collections;
@@ -31,11 +33,14 @@ public class CameraMovement : MonoBehaviour
     [Range(1.0f, 90.0f)]
     public float angle;
 
+    private GameObject player;
+
     private const float HorizontalScreenPercentage = 0.1f;
     private const float VerticalScreenPercentage = 0.1f;
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag( "Player" );
         CenterAtPlayer();
     }
 
@@ -102,17 +107,15 @@ public class CameraMovement : MonoBehaviour
         transform.position += direction * ( speed * Time.deltaTime );
     }
 
-    public void CenterAtPlayer() {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
+    public void CenterAtPlayer()
+    {
         float angleRad = Mathf.Deg2Rad * (90 - angle);
 
-        float y = Mathf.Cos(angleRad) * distance;
-        float x = Mathf.Sin(angleRad) * distance;
+        float yDistanceToTranslate = Mathf.Cos(angleRad) * distance;
+        float xDistanceToTranslate = Mathf.Sin(angleRad) * distance;
 
-
-        float h = distance / Mathf.Sqrt(2);
-        transform.position = player.transform.position + new Vector3(x, y, 0);
+        var newPosition = player.transform.position + new Vector3(xDistanceToTranslate, yDistanceToTranslate, 0);
+        transform.position = newPosition;
         transform.LookAt(player.transform);
     }
 }
