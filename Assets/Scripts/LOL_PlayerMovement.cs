@@ -1,21 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/*
+ * 12.- OPEN-CLOSED & SINGLE RESPONSABILITY -> We will extract skills management. (Q and W buttons).
+ * 12.1.- We create classes for skills extraction.
+ * NOTE: The keys that we use for the skill are not removed, the skill only cares about itself. (Thus we fulfill the first principle).
+ * NOTE: Real life object name for classes and verb name for methods.
+ * 12.2.- Solve the variables they need -> Instead of doing the Monobehaviour transform, we pass it as a parameter to the method. And to instantiate we will do: Object.Instantiate () ... We need to perform so we will do the monobehaviour classes
+ * 12.3.- Instances are added to the class in the PlayerMovement class and their methods are called where the keys are pressed. And we apply the guard clause rule to the ifs of the Q key, to remove parentheses and nesting levels.
+ * 12.4.- The same applies for the WSpell class.
+ * 12.5.- At this point the code is more compact and clean, in addition we have extracted 2 responsibilities from the class.
+ * 12.6.- The LOL_PlayerMovement class was moving and applying the skills. The name was not consistent with the responsibilities it had and it still is not because although it does not have the behavior, it does give the orders of when to execute.
+ * 13.- Open-Closed -> We will use it to add new abilities and we will not have to modify the player every time we do it.
+ * 13.1.- We will disappear the instances of the QSpell and WSpell classes and in their place we will generalize them so that they have a common parent.
+ * NOTE: Today this would be ideal but unity still does not allow interfaces to be serialized. And we cannot get them by getcomponent in awake because they are 2 with the same interface, which causes a conflict that does not know which one to use.
+ * 13.2.- We will change the interface to an abstract class and its references and instances.
+ * NOTE: To pull it in the editor you pull it directly from the component you don't pull the gameObject.
+ * 14.- VIEW AGGREGATION -> Now what we will do is that instead of having 2 Spells in the Getcomponents, we will assign a view to have all the ones we want. And the configuration of the key to each spell.
+ * 14.1.- We will extract the key.
+ * 14.2.- EXTRACTION OF CONFIGURATION CLASS -> We will make a class for the configuration of the spells, we will create an array for the spells and we will extract the handleAtack method in just one.
+*/
+
 using UnityEngine;
 using UnityEngine.AI;
 
 public class LOL_PlayerMovement : MonoBehaviour
 {
     private NavMeshAgent _nav;
-    private Transform _body;    // Body gameobject HAS to be the first child in the list
+    private Transform _body;
     private Animator _ac;
 
-    public GameObject castPreviewRange;
+    [SerializeField] private SpellConfiguration[] spells;
 
-    public GameObject qSpellPreview;
-    public GameObject qSpell;
-
-    public GameObject wSpellPreview;
-    public GameObject wSpell;
     private void Awake()
     {
         _nav = GetComponent<NavMeshAgent>();
@@ -23,13 +36,11 @@ public class LOL_PlayerMovement : MonoBehaviour
         _ac = _body.GetComponent<Animator>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         _nav.updateRotation = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(1)) {
@@ -39,15 +50,12 @@ public class LOL_PlayerMovement : MonoBehaviour
                 _nav.SetDestination(hit.point);
         }
 
+        foreach ( var spellConfiguration in spells )
+        {
+            HandleSpell( spellConfiguration );
+        }
 
-        HandleQAttack();
-        HandleWAttack();
-
-
-        
         _ac.SetBool("Run", IsMoving());
-        
-
 
     }
 
@@ -68,115 +76,22 @@ public class LOL_PlayerMovement : MonoBehaviour
         }
     }
 
-    private void HandleQAttack() {
-        if (Input.GetKey(KeyCode.Q))
-        {
-            qSpellPreview.SetActive(true);
-            castPreviewRange.SetActive(true);
-
-            RaycastHit hitAtk;
-            Ray rayAtk = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(rayAtk, out hitAtk, Mathf.Infinity))
-            {
-                float floorHeight = hitAtk.point.y;
-                Vector3 center = new Vector3(transform.position.x, floorHeight, transform.position.z);
-
-                Vector3 dir = hitAtk.point - center;
-                dir = new Vector3(dir.x, 0, dir.z);
-                Vector3 castDir = qSpellPreview.transform.position - center;
-                castDir = new Vector3(castDir.x, 0, castDir.z);
-                float sAngle = Vector3.SignedAngle(dir, castDir, Vector3.up);
-
-                //Debug.DrawRay(center, dir, Color.red);
-                //Debug.DrawRay(center, castDir * 50, Color.blue);
-
-                int sign = (sAngle >= 0) ? 1 : -1;
-                float angle = Mathf.Abs(sAngle);
-                if (angle > 0.3f) qSpellPreview.transform.RotateAround(center, Vector3.up, -sign * angle);
-
-
-
-                Debug.Log(angle);
-            }
-        }
-        else if (Input.GetKeyUp(KeyCode.Q)) {
-           
-
-            _nav.velocity = Vector3.zero;
-            _nav.ResetPath();
-            _ac.Play("Spell_Q");
-
-            RaycastHit hitAtk;
-            Ray rayAtk = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(rayAtk, out hitAtk, Mathf.Infinity))
-            {
-                float transformHeight = transform.position.y;
-                float floorHeight = hitAtk.point.y;
-                Vector3 point = new Vector3(hitAtk.point.x, transformHeight, hitAtk.point.z);
-
-
-
-                transform.LookAt(point);
-
-                Vector3 center = new Vector3(transform.position.x, floorHeight, transform.position.z);
-
-                Vector3 dir = hitAtk.point - center;
-                dir = new Vector3(dir.x, 0, dir.z);
-                GameObject spell = Instantiate(qSpell, transform.position, Quaternion.identity);
-                spell.GetComponent<Rigidbody>().velocity = dir.normalized * 5.0f;
-                Debug.Log(dir.normalized);
-            }
-
-            
-
-        }
-        else
-        {
-            qSpellPreview.SetActive(false);
-            castPreviewRange.SetActive(false);
-        }
-    }
-
-
-    private void HandleWAttack()
+    private void HandleSpell( SpellConfiguration spellConfiguration )
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey( spellConfiguration.KeyCode ))
         {
-            wSpellPreview.SetActive(true);
-            castPreviewRange.SetActive(true);
-
-            RaycastHit hitAtk;
-            Ray rayAtk = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(rayAtk, out hitAtk, Mathf.Infinity))
-            {
-                wSpellPreview.transform.position = hitAtk.point + new Vector3(0, 0.02f, 0);
-
-            }
+            spellConfiguration.Spell.KeyPressed( transform );
+            return;
         }
-        else if (Input.GetKeyUp(KeyCode.W))
+
+        if (Input.GetKeyUp( spellConfiguration.KeyCode ) )
         {
-            _nav.velocity = Vector3.zero;
-            _nav.ResetPath();
-            _ac.Play("Spell_W");
-
-            RaycastHit hitAtk;
-            Ray rayAtk = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(rayAtk, out hitAtk, Mathf.Infinity))
-            {
-                float transformHeight = transform.position.y;
-                float floorHeight = hitAtk.point.y;
-                Vector3 point = new Vector3(hitAtk.point.x, floorHeight + 0.01f, hitAtk.point.z);
-                
-                transform.LookAt(point);
-
-                GameObject spell = Instantiate(wSpell, point, Quaternion.identity);
-            }
-            
+            spellConfiguration.Spell.KeyReleased( transform );
+            return;
         }
-        else
-        {
-            wSpellPreview.SetActive(false);
-            castPreviewRange.SetActive(false);
-        }
+        
+        spellConfiguration.Spell.Reset();
+
     }
+
 }
