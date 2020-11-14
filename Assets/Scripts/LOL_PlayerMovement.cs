@@ -3,22 +3,30 @@
  * 12.1.- Creamos clases para extracción de habilidades.
  * NOTA: No se extraen las teclas que usamos para la hbilidad, la habilidad sólo se preocupa de sí misma. (Así cumplimos el primer principio).
  * NOTA: Nombre de objeto en la vida real para las clases y nombre de verbo para los métodos.
- * 
+ * 12.2.- Resolver las variables que necesitan -> En vez de hacer el transform Monobehaviour, se lo pasamos por parametro al método. Y al instantiate le haremos: Object.Instantiate()... Necesitamos serealizar por lo que haremos las clases monobehaviour
  */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class QSpell
+public class QSpell : MonoBehaviour
 {
+    private NavMeshAgent _nav;
+    private Transform _body;
+    private Animator _ac;
+
+    [SerializeField] private GameObject castPreviewRange;
+    [SerializeField] private GameObject qSpellPreview;
+    [SerializeField] private GameObject qSpell;
+
     public void Reset()
     {
         qSpellPreview.SetActive( false );
         castPreviewRange.SetActive( false );
     }
 
-    public void KeyPressed()
+    public void KeyPressed(Transform transform)
     {
         qSpellPreview.SetActive( true );
         castPreviewRange.SetActive( true );
@@ -50,7 +58,7 @@ public class QSpell
         }
     }
 
-    public void KeyReleased()
+    public void KeyReleased(Transform transform)
     {
         _nav.velocity = Vector3.zero;
         _nav.ResetPath();
@@ -72,7 +80,7 @@ public class QSpell
 
             Vector3 dir = hitAtk.point - center;
             dir = new Vector3( dir.x, 0, dir.z );
-            GameObject spell = Instantiate( qSpell, transform.position, Quaternion.identity );
+            GameObject spell = Object.Instantiate( qSpell, transform.position, Quaternion.identity );
             spell.GetComponent<Rigidbody>().velocity = dir.normalized * 5.0f;
             Debug.Log( dir.normalized );
         }
