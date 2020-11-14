@@ -3,6 +3,8 @@
  * 1.- NORMALIZAR VARIABLES -> Usamos un estandar u otro pero no combinados. Nosotros usaremos Camel Caes.
  * 2.- ESCRIBIR BIEN EL NOMBRE DE LAS VARIABLES -> No nos de miedo a tener nombres largos.
  * 3.- HACER CONSTANTES -> Hay dos valores que se asignan y no se modifican que son el horizontal y el vertical.
+ * 4.- INDICAR MODIFICADORES CORRECTAMENTE -> Un código más limpio tiene bien especificado todo. (Private, public).
+ * 5.- BORRAR COMENTARIOS QUE NO APORTEN NADA -> Como los de unity.
  */
 
 using System.Collections;
@@ -24,8 +26,7 @@ public class CameraMovement : MonoBehaviour
     private const float HorizontalScreenPercentage = 0.1f;
     private const float VerticalScreenPercentage = 0.1f;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         CenterAtPlayer();
     }
@@ -35,8 +36,7 @@ public class CameraMovement : MonoBehaviour
         MoveCamera();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKey(KeyCode.Space))
             CenterAtPlayer();
