@@ -5,6 +5,7 @@
  * 3.- HACER CONSTANTES -> Hay dos valores que se asignan y no se modifican que son el horizontal y el vertical.
  * 4.- INDICAR MODIFICADORES CORRECTAMENTE -> Un código más limpio tiene bien especificado todo. (Private, public).
  * 5.- BORRAR COMENTARIOS QUE NO APORTEN NADA -> Como los de unity.
+ * 6.- LIMPIAR INTERPRETACIONES -> Aquí tenemos que leer y pensar qué está haciendo el código y eso no es lo que queremos por ejemplo el if del update. Limpiaremos eso.
  */
 
 using System.Collections;
@@ -38,8 +39,13 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if ( HasToCenterCameraAtPlayer() )
             CenterAtPlayer();
+    }
+
+    private static bool HasToCenterCameraAtPlayer()
+    {
+        return Input.GetKey( KeyCode.Space );
     }
 
     private void MoveCamera() {
