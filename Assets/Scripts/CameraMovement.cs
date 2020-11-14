@@ -10,6 +10,8 @@
  * = Volvemos a modificar nomsbres de las variables para que sea explicito. =
  * 8.- EVITAR COMENTARIOS. Los comentarios no arreglan un mal código -> Extraer el movimiento horizontal y lo hacemos más legible.
  * 9.- OPTIMIZACION DENTRO DE LA EXTRACCION -> Se modifica como están multiplicando los vectores para que multiplique escalares juntos y en vez de crear vectores nuevos usar los vectores predefinidos.
+ * = Más extraccion para más legibilidad =
+ * 10.- 
  */
 
 using System.Collections;
@@ -20,7 +22,7 @@ using System;
 public class CameraMovement : MonoBehaviour
 {
     /*[FormerlySerializeAs( "movement_speed" )]*/ [Range(1.0f, 20.0f)]
-    public float movement_speed;
+    public float movementSpeed;
 
     [Range(1.0f, 6.0f)]
     public float distance;
@@ -68,11 +70,11 @@ public class CameraMovement : MonoBehaviour
     {
         if ( mousePosition.y < currentResolutionHeight * VerticalScreenPercentage )
         {
-            transform.position += Vector3.right * (movement_speed * Time.deltaTime);
+            ApplyTranslation( Vector3.right, movementSpeed );
         }
         else if ( mousePosition.y > currentResolutionHeight - currentResolutionHeight * VerticalScreenPercentage )
         {
-            transform.position -= Vector3.right * ( movement_speed * Time.deltaTime );
+            ApplyTranslation( Vector3.left, movementSpeed );
         }
     }
 
@@ -80,12 +82,17 @@ public class CameraMovement : MonoBehaviour
     {
         if ( mousePosition.x < currentResolutionWidth * HorizontalScreenPercentage )
         {
-            transform.position -= Vector3.forward * ( movement_speed * Time.deltaTime );
+            ApplyTranslation( Vector3.back, movementSpeed );
         }
         else if ( mousePosition.x > currentResolutionWidth - currentResolutionWidth * HorizontalScreenPercentage )
         {
-            transform.position += Vector3.forward * ( movement_speed * Time.deltaTime );
+            ApplyTranslation( Vector3.forward, movementSpeed );
         }
+    }
+
+    private void ApplyTranslation( Vector3 direction, float speed )
+    {
+        transform.position += direction * ( speed * Time.deltaTime );
     }
 
     public void CenterAtPlayer() {
