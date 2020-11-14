@@ -4,89 +4,12 @@
  * NOTA: No se extraen las teclas que usamos para la hbilidad, la habilidad sólo se preocupa de sí misma. (Así cumplimos el primer principio).
  * NOTA: Nombre de objeto en la vida real para las clases y nombre de verbo para los métodos.
  * 12.2.- Resolver las variables que necesitan -> En vez de hacer el transform Monobehaviour, se lo pasamos por parametro al método. Y al instantiate le haremos: Object.Instantiate()... Necesitamos serealizar por lo que haremos las clases monobehaviour
+ * 12.3.- Se agregan las instancias a la clase en la clase PlayerMovement y se llaman a sus métodos donde se presionan las teclas. Y aplicamos regla de clausula de guarda a los if de la tecla Q, para quitar parentesis y niveles de anidamiento.
  */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
-public class QSpell : MonoBehaviour
-{
-    private NavMeshAgent _nav;
-    private Transform _body;
-    private Animator _ac;
-
-    [SerializeField] private GameObject castPreviewRange;
-    [SerializeField] private GameObject qSpellPreview;
-    [SerializeField] private GameObject qSpell;
-
-    public void Reset()
-    {
-        qSpellPreview.SetActive( false );
-        castPreviewRange.SetActive( false );
-    }
-
-    public void KeyPressed(Transform transform)
-    {
-        qSpellPreview.SetActive( true );
-        castPreviewRange.SetActive( true );
-
-        RaycastHit hitAtk;
-        Ray rayAtk = Camera.main.ScreenPointToRay( Input.mousePosition );
-        if ( Physics.Raycast( rayAtk, out hitAtk, Mathf.Infinity ) )
-        {
-            float floorHeight = hitAtk.point.y;
-            Vector3 center = new Vector3( transform.position.x, floorHeight, transform.position.z );
-
-            Vector3 dir = hitAtk.point - center;
-            dir = new Vector3( dir.x, 0, dir.z );
-            Vector3 castDir = qSpellPreview.transform.position - center;
-            castDir = new Vector3( castDir.x, 0, castDir.z );
-            float sAngle = Vector3.SignedAngle( dir, castDir, Vector3.up );
-
-            //Debug.DrawRay(center, dir, Color.red);
-            //Debug.DrawRay(center, castDir * 50, Color.blue);
-
-            int sign = ( sAngle >= 0 ) ? 1 : -1;
-            float angle = Mathf.Abs( sAngle );
-            if ( angle > 0.3f )
-                qSpellPreview.transform.RotateAround( center, Vector3.up, -sign * angle );
-
-
-
-            Debug.Log( angle );
-        }
-    }
-
-    public void KeyReleased(Transform transform)
-    {
-        _nav.velocity = Vector3.zero;
-        _nav.ResetPath();
-        _ac.Play( "Spell_Q" );
-
-        RaycastHit hitAtk;
-        Ray rayAtk = Camera.main.ScreenPointToRay( Input.mousePosition );
-        if ( Physics.Raycast( rayAtk, out hitAtk, Mathf.Infinity ) )
-        {
-            float transformHeight = transform.position.y;
-            float floorHeight = hitAtk.point.y;
-            Vector3 point = new Vector3( hitAtk.point.x, transformHeight, hitAtk.point.z );
-
-
-
-            transform.LookAt( point );
-
-            Vector3 center = new Vector3( transform.position.x, floorHeight, transform.position.z );
-
-            Vector3 dir = hitAtk.point - center;
-            dir = new Vector3( dir.x, 0, dir.z );
-            GameObject spell = Object.Instantiate( qSpell, transform.position, Quaternion.identity );
-            spell.GetComponent<Rigidbody>().velocity = dir.normalized * 5.0f;
-            Debug.Log( dir.normalized );
-        }
-    }
-
-}
 
 public class WSpell
 {
@@ -101,8 +24,7 @@ public class LOL_PlayerMovement : MonoBehaviour
 
     public GameObject castPreviewRange;
 
-    public GameObject qSpellPreview;
-    public GameObject qSpell;
+    [SerializeField] private QSpell qSpell;
 
     public GameObject wSpellPreview;
     public GameObject wSpell;
@@ -158,19 +80,21 @@ public class LOL_PlayerMovement : MonoBehaviour
         }
     }
 
-    private void HandleQAttack() {
+    private void HandleQAttack()
+    {
         if (Input.GetKey(KeyCode.Q))
         {
-            
+            qSpell.KeyPressed( transform );
+            return;
         }
-        else if (Input.GetKeyUp(KeyCode.Q)) {
-           
 
-        }
-        else
+        if (Input.GetKeyUp(KeyCode.Q))
         {
-            
+            qSpell.KeyReleased( transform );
+            return;
         }
+
+            qSpell.Reset();
     }
 
 

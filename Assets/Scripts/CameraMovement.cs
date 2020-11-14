@@ -12,7 +12,7 @@
  * 9.- OPTIMIZACION DENTRO DE LA EXTRACCION -> Se modifica como están multiplicando los vectores para que multiplique escalares juntos y en vez de crear vectores nuevos usar los vectores predefinidos.
  * = Más extraccion para más legibilidad =
  * 10.- MODIFICACION DE CONDICIONALES -> Es lo mismo que la limpieza de interpretaciones. Lo haremos dentro de las extracciones.
- * 11.- CASO DE GUARDA -> Es una optimización que se aplica a los if's statement y lo aplicaremos a los que acabamos de extraer.
+ * 11.- CLAUSULA DE GUARDA -> Es una optimización que se aplica a los if's statement y lo aplicaremos a los que acabamos de extraer.
  * = Más Optimizacion y estandarización de variables = -> FindObjectType.
 */
 
