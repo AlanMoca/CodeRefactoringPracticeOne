@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class QSpell : MonoBehaviour
+public class QSpell : Spell
 {
     private NavMeshAgent _nav;
     private Transform _body;
@@ -19,13 +19,13 @@ public class QSpell : MonoBehaviour
         _ac = _body.GetComponent<Animator>();
     }
 
-    public void Reset()
+    public override void Reset()
     {
         qSpellPreview.SetActive( false );
         castPreviewRange.SetActive( false );
     }
 
-    public void KeyPressed(Transform transform)
+    public override void KeyPressed(Transform transform)
     {
         qSpellPreview.SetActive( true );
         castPreviewRange.SetActive( true );
@@ -57,7 +57,7 @@ public class QSpell : MonoBehaviour
         }
     }
 
-    public void KeyReleased(Transform transform)
+    public override void KeyReleased(Transform transform)
     {
         _nav.velocity = Vector3.zero;
         _nav.ResetPath();

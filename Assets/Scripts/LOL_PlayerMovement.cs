@@ -11,6 +11,8 @@
  * 13.- Open-Closed -> Lo usaremos para añadir nuevas habilidades y no tengamos que modificar al player cada que lo hagamos.
  * 13.1.- Desapareceremos las instancias de las clases QSpell y WSpell y en su lugar las generalizaremos para que tengan un padre común.
  * NOTA: A día de hoy esto sería lo ideal pero unity aún no deja serializar interfaces. Y no podemos obtenerlas por getcomponent en el awake porque son 2 con la misma interface, lo que ocasiona un conflicto de que no sabe cuál usar.
+ * 13.2.- Cambiaremos la interface a clase abstracta y sus referencias e instancias.
+ * NOTA: Para jalarlo en el editor lo jalas directamente del componente no jalas el gameObject.
  */
 using System.Collections;
 using System.Collections.Generic;
@@ -24,8 +26,8 @@ public class LOL_PlayerMovement : MonoBehaviour
     private Transform _body;    // Body gameobject HAS to be the first child in the list
     private Animator _ac;
 
-    [SerializeField] private ISpell qSpell;
-    [SerializeField] private ISpell wSpell;
+    [SerializeField] private Spell qSpell;
+    [SerializeField] private Spell wSpell;
 
     private void Awake()
     {
