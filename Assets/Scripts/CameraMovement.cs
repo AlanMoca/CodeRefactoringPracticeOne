@@ -8,7 +8,7 @@
  * 6.- LIMPIAR INTERPRETACIONES -> Aquí tenemos que leer y pensar qué está haciendo el código y eso no es lo que queremos por ejemplo el if del update. Limpiaremos eso.
  * 7.- SIMPLIFICACION DE TIPOS CON VAR -> Dentro de los metodos no es necesario especificar el tipo de una variable ya que saber el tipo solo aporta ruido y ya está implicito en el nombre de la variable.
  * = Volvemos a modificar nomsbres de las variables para que sea explicito. =
- * 
+ * 8.- EVITAR COMENTARIOS. Los comentarios no arreglan un mal código -> Extraer el movimiento horizontal y lo hacemos más legible.
  */
 
 using System.Collections;
@@ -51,33 +51,41 @@ public class CameraMovement : MonoBehaviour
         return Input.GetKey( KeyCode.Space );
     }
 
-    private void MoveCamera() {
+    private void MoveCamera()
+    {
         var mousePosition = Input.mousePosition;
         var currentResolutionWidth = Screen.currentResolution.width;
         var currentResolutionHeight = Screen.currentResolution.height;
 
+        Debug.Log( mousePosition.x + " - " + mousePosition.y );
 
-        Debug.Log(mousePosition.x + " - " + mousePosition.y);
-        // Horizontal
-        if (mousePosition.x < currentResolutionWidth * HorizontalScreenPercentage) {
-            transform.position -= new Vector3(0,0,1) * movement_speed * Time.deltaTime;
-        }
-        else if (mousePosition.x > currentResolutionWidth - currentResolutionWidth * HorizontalScreenPercentage)
+        MoveCameraHorizontal( mousePosition, currentResolutionWidth );
+        MoveCameraVertical( mousePosition, currentResolutionHeight );
+    }
+
+    private void MoveCameraVertical( Vector3 mousePosition, int currentResolutionHeight )
+    {
+        if ( mousePosition.y < currentResolutionHeight * VerticalScreenPercentage )
         {
-            transform.position += new Vector3(0, 0, 1) * movement_speed * Time.deltaTime;
+            transform.position += new Vector3( 1, 0, 0 ) * movement_speed * Time.deltaTime;
         }
-        
-        // Vertical
-        if (mousePosition.y < currentResolutionHeight * VerticalScreenPercentage)
+        else if ( mousePosition.y > currentResolutionHeight - currentResolutionHeight * VerticalScreenPercentage )
         {
-            transform.position += new Vector3(1, 0, 0) * movement_speed * Time.deltaTime;
-        }
-        else if (mousePosition.y > currentResolutionHeight - currentResolutionHeight * VerticalScreenPercentage)
-        {
-            transform.position -= new Vector3(1, 0, 0) * movement_speed * Time.deltaTime;
+            transform.position -= new Vector3( 1, 0, 0 ) * movement_speed * Time.deltaTime;
         }
     }
 
+    private void MoveCameraHorizontal( Vector3 mousePosition, int currentResolutionWidth )
+    {
+        if ( mousePosition.x < currentResolutionWidth * HorizontalScreenPercentage )
+        {
+            transform.position -= new Vector3( 0, 0, 1 ) * movement_speed * Time.deltaTime;
+        }
+        else if ( mousePosition.x > currentResolutionWidth - currentResolutionWidth * HorizontalScreenPercentage )
+        {
+            transform.position += new Vector3( 0, 0, 1 ) * movement_speed * Time.deltaTime;
+        }
+    }
 
     public void CenterAtPlayer() {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
